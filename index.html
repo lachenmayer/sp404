@@ -1,0 +1,78 @@
+<html>
+<head>
+<style>
+</style>
+</head>
+<body>
+<script>
+var samples = [
+  'BD0075.WAV', 'RS.WAV', 'SD5050.WAV', 'CP.WAV',
+  'CH.WAV', 'OH00.WAV', 'MA.WAV', 'CY0000.WAV',
+  'LT00.WAV', 'MT00.WAV', 'HT00.WAV', 'LC00.WAV'
+]
+var keys = [
+  49, 50, 51, 52,
+  81, 87, 69, 82,
+  65, 83, 68, 70
+]
+var img = function (src) {
+  var i = document.createElement('img')
+  i.src = src
+  return i
+}
+var button = function (number) {
+  var button = img('images/404_off_' + number + '.png')
+  button.className = 'button button-' + number
+
+  var sound = new Audio('samples/' + samples[number - 1])
+
+  var play = function () {
+    sound.pause()
+    sound.currentTime = 0
+    sound.play()
+    button.src = 'images/404_on_' + number + '.png'
+    setTimeout(function () {
+      button.src = 'images/404_off_' + number + '.png'
+    }, sound.duration * 1000)
+  }
+
+  document.addEventListener('keydown', function (event) {
+    if (event.keyCode == keys[number - 1]) play()
+  })
+  button.addEventListener('click', play)
+
+  return button
+}
+var row = function (name, offset) {
+  var container = document.createElement('div')
+  container.className = "row row-" + name
+  container.appendChild(img('images/404_pre_' + name + '.png'))
+  container.appendChild(button(offset, 'off'))
+  container.appendChild(img('images/404_left_' + name + '.png'))
+  container.appendChild(button(offset + 1, 'off'))
+  container.appendChild(img('images/404_mid_' + name + '.png'))
+  container.appendChild(button(offset + 2, 'off'))
+  container.appendChild(img('images/404_right_' + name + '.png'))
+  container.appendChild(button(offset + 3, 'off'))
+  container.appendChild(img('images/404_post_' + name + '.png'))
+  return container
+}
+var sp404 = function () {
+  var container = document.createElement('div')
+  container.className = 'sp404'
+  container.appendChild(img('images/404_top.png'))
+  container.appendChild(row('top', 1))
+  container.appendChild(img('images/404_first_row.png'))
+  container.appendChild(row('mid', 5))
+  container.appendChild(img('images/404_second_row.png'))
+  container.appendChild(row('bottom', 9))
+  container.appendChild(img('images/404_bottom.png'))
+  return container
+}
+document.body.appendChild(sp404())
+document.addEventListener('keydown', function (event) {
+  console.log(event.keyCode)
+})
+</script>
+</body>
+</html>
